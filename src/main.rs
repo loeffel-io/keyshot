@@ -1,6 +1,6 @@
 pub mod selection;
 
-use selection::{Direction, SelectionRect};
+use selection::{Direction, Rect};
 
 fn main() {
     println!("Hello World!");
