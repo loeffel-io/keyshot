@@ -1,3 +1,6 @@
+# build --aspects=@rules_rust//rust:defs.bzl%rust_clippy_aspect
+# build --output_groups=+clippy_checks
+
 # prebuilt protobuf
 # remove after bazel 9 migration and https://github.com/bazel-contrib/rules_go/issues/4587
 build --incompatible_enable_proto_toolchain_resolution

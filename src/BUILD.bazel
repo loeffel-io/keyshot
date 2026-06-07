@@ -1,3 +1,4 @@
+load("@crates//:defs.bzl", "aliases", "all_crate_deps")
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_test")
 
 rust_binary(
@@ -6,9 +7,26 @@ rust_binary(
         "main.rs",
         "selection.rs",
     ],
+    deps = all_crate_deps(
+        package_name = "",
+        normal = True,
+    ),
 )
 
 rust_test(
     name = "main_test",
+    aliases = aliases(
+        package_name = "",
+        normal_dev = True,
+        proc_macro_dev = True,
+    ),
     crate = ":main",
+    proc_macro_deps = all_crate_deps(
+        package_name = "",
+        proc_macro_dev = True,
+    ),
+    deps = all_crate_deps(
+        package_name = "",
+        normal_dev = True,
+    ),
 )
