@@ -1,5 +1,5 @@
-load("@crates//:defs.bzl", "aliases", "all_crate_deps")
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_test")
+load("@rules_apple//apple:macos.bzl", "macos_application")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_static_library", "rust_test")
 
 rust_binary(
     name = "main",
@@ -10,7 +10,49 @@ rust_binary(
     deps = ["@crates//:winit"],
 )
 
+rust_static_library(
+    name = "main_lib",
+    srcs = [
+        "main.rs",
+        "selection.rs",
+    ],
+    crate_root = "main.rs",
+    deps = ["@crates//:winit"],
+)
+
+objc_library(
+    name = "main_c",
+    srcs = ["main.c"],
+    sdk_frameworks = [
+        "AppKit",
+        "Carbon",
+        "CoreGraphics",
+        "CoreVideo",
+        "Foundation",
+        "Metal",
+        "QuartzCore",
+    ],
+    target_compatible_with = ["@platforms//os:macos"],
+    deps = [":main_lib"],
+)
+
+macos_application(
+    name = "keyshot",
+    bundle_id = "io.loeffel.keyshot",
+    infoplists = ["Info.plist"],
+    minimum_os_version = "11.0",
+    target_compatible_with = ["@platforms//os:macos"],
+    # app_icons = glob(["Assets.xcassets/AppIcon.appiconset/**"]),
+    # resources = glob(["resources/**"]),
+    deps = [":main_c"],
+)
+
 rust_test(
     name = "main_test",
     crate = ":main",
+)
+
+rust_test(
+    name = "main_lib_test",
+    crate = ":main_lib",
 )

@@ -56,3 +56,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     event_loop.run_app(App::new())?;
     Ok(())
 }
+
+#[unsafe(no_mangle)]
+pub extern "C" fn rust_main() -> i32 {
+    main();
+    0
+}
