@@ -1,5 +1,7 @@
 load("@gazelle//:def.bzl", "gazelle")
 
+# gazelle:rust_crates_prefix @crates//:
+# gazelle:rust_cargo_lockfile Cargo.lock
 gazelle(
     name = "gazelle",
     gazelle = "@gazelle_rust//:gazelle_bin",

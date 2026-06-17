@@ -7,26 +7,10 @@ rust_binary(
         "main.rs",
         "selection.rs",
     ],
-    deps = all_crate_deps(
-        package_name = "",
-        normal = True,
-    ),
+    deps = ["@crates//:winit"],
 )
 
 rust_test(
     name = "main_test",
-    aliases = aliases(
-        package_name = "",
-        normal_dev = True,
-        proc_macro_dev = True,
-    ),
     crate = ":main",
-    proc_macro_deps = all_crate_deps(
-        package_name = "",
-        proc_macro_dev = True,
-    ),
-    deps = all_crate_deps(
-        package_name = "",
-        normal_dev = True,
-    ),
 )
