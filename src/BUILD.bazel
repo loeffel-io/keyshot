@@ -7,7 +7,10 @@ rust_binary(
         "main.rs",
         "selection.rs",
     ],
-    deps = ["@crates//:winit"],
+    deps = [
+        "@crates//:softbuffer",
+        "@crates//:winit",
+    ],
 )
 
 rust_static_library(
@@ -17,7 +20,10 @@ rust_static_library(
         "selection.rs",
     ],
     crate_root = "main.rs",
-    deps = ["@crates//:winit"],
+    deps = [
+        "@crates//:softbuffer",
+        "@crates//:winit",
+    ],
 )
 
 objc_library(

@@ -1,6 +1,8 @@
 pub mod selection;
 
 use selection::{Direction, Rect};
+use softbuffer::{Context, Surface};
+use std::rc::Rc;
 use winit::application::ApplicationHandler;
 use winit::event::{ElementState, KeyEvent, WindowEvent};
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
@@ -15,7 +17,8 @@ pub enum Mode {
 }
 
 struct App {
-    window: Option<Box<dyn Window>>,
+    window: Option<Rc<Box<dyn Window>>>,
+    surface: Option<Surface<Rc<Box<dyn Window>>, Rc<Box<dyn Window>>>>,
     rect: Rect,
     mode: Mode,
 }
@@ -24,6 +27,7 @@ impl App {
     pub fn new() -> Self {
         Self {
             window: None,
+            surface: None,
             rect: Rect::new(0, 0, 100, 100),
             mode: Mode::Positioning,
         }
@@ -54,7 +58,13 @@ impl ApplicationHandler for App {
             .with_decorations(true)
             .with_fullscreen(Some(Fullscreen::Borderless(None)));
 
-        self.window = Some(event_loop.create_window(window_attributes).unwrap());
+        let window = Rc::new(event_loop.create_window(window_attributes).unwrap());
+
+        let context = Context::new(window.clone()).unwrap();
+        let surface = Surface::new(&context, window.clone()).unwrap();
+
+        self.window = Some(window);
+        self.surface = Some(surface);
     }
 
     fn window_event(
@@ -116,8 +126,6 @@ impl ApplicationHandler for App {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Hello World!");
-
     let event_loop = EventLoop::new()?;
     event_loop.set_control_flow(ControlFlow::Wait);
     event_loop.run_app(App::new())?;
