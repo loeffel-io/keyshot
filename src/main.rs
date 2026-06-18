@@ -116,6 +116,10 @@ impl ApplicationHandler for App {
                     }
                     _ => (),
                 }
+
+                if let Some(window) = self.window.as_ref() {
+                    window.request_redraw();
+                }
             }
             WindowEvent::RedrawRequested => {
                 self.window.as_ref().unwrap().request_redraw();
