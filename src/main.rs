@@ -62,8 +62,6 @@ impl ApplicationHandler for App {
         let window: Arc<dyn Window> =
             Arc::from(event_loop.create_window(window_attributes).unwrap());
 
-        // window.set_simple_fullscreen(true);
-
         let size = window.surface_size();
 
         let surface_texture = SurfaceTexture::new(size.width, size.height, window.clone());
