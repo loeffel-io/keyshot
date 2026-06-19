@@ -7,7 +7,7 @@ use winit::application::ApplicationHandler;
 use winit::event::{ElementState, KeyEvent, WindowEvent};
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::keyboard::{KeyCode, PhysicalKey};
-use winit::platform::macos::WindowExtMacOS;
+use winit::window::WindowLevel;
 use winit::window::{Window, WindowAttributes, WindowId};
 
 pub enum Mode {
@@ -55,12 +55,14 @@ impl ApplicationHandler for App {
         let window_attributes = WindowAttributes::default()
             .with_title("Keyshot")
             .with_transparent(true)
-            .with_decorations(false);
+            .with_decorations(false)
+            .with_window_level(WindowLevel::AlwaysOnTop)
+            .with_maximized(true);
 
         let window: Arc<dyn Window> =
             Arc::from(event_loop.create_window(window_attributes).unwrap());
 
-        window.set_simple_fullscreen(true);
+        // window.set_simple_fullscreen(true);
 
         let size = window.surface_size();
 
@@ -95,7 +97,7 @@ impl ApplicationHandler for App {
                     },
                 ..
             } => {
-                let step = 10;
+                let step = 50;
 
                 match keycode {
                     KeyCode::KeyH | KeyCode::ArrowLeft => {
